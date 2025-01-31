@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project]
+name = "espy"
+version = "1.0"
+description = "Espn client for interacting with ESPN API"
+authors = [{name = "Ben Sage"}]
+maintainers = [{name = "Ben Sage"}]
+readme = "README.md"
+keywords = ["sports", "football", "nfl", "mlb", "nba", "basketball", 'baseball']
+dynamic = ["dependencies"]
