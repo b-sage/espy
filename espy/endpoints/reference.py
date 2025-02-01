@@ -9,6 +9,9 @@ def split_id(url):
     return url.split('/')[-1].split('?')[0]
 
 #TODO: should probably use a seperate object for the response parsing eg get_athlete_ids
+#TODO: need to think through cases of whether its better to require multiple calls to get the data we need or if just splicing out
+#some ID within the object and passing that through is fine. IDs are probably enough in a lot of cases, since we can use for lookups.
+#E.g. when we request a season, we don't need to return all of the event/competition objects, just the ids
 class ReferenceSportsEndpoints(BaseEndpoints):
     base_url = "https://sports.core.api.espn.com/v2/sports/{}/leagues/{}/"
     supported_sports = ["football", "basketball", "baseball"]
