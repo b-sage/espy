@@ -47,7 +47,6 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         query = self._build_query(False, limit=limit, page=page)
         return self._execute_request("teams" + query)
 
-    #TODO: this looks a lot like get_athlete_ids... can generalize some of this logic
     def get_team_ids(self):
         return self._extract_ids(self._get_teams)
 
@@ -89,6 +88,23 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         query = self._build_query(False, limit=limit, page=page)
         return self._execute_request("leaders" + query)
 
+
+
+    def _get_seasons(self, limit: int=100, page: int=1):
+        query = self._build_query(False, limit=limit, page=page)
+        return self._execute_request("seasons" + query)
+
+    def get_seasons(self):
+        return self._extract_ids(self._get_seasons)
+
+    def get_season(self, year: Union[int, str]):
+        return self._execute_request(f"seasons/{year}")
+
+    
+
+
+    def get_event(self, id_: Union[int, str]):
+        return self._execute_request(f"events/{id_}")
 
 
 class ReferenceSiteEndpoints(BaseEndpoints):
