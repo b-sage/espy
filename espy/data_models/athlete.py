@@ -1,5 +1,5 @@
 from typing import Union
-from espy.data_models.position import Position
+from espy.utils import split_id
 
 class Athlete:
 
@@ -11,12 +11,31 @@ class Athlete:
     weight: Union[int, str, float]
     age: Union[int, str]
     dob: str
-    position: Position
+    position_id: Union[int, str]
+    team_id: Union[int, str]
     debut_year: Union[int, str]
+    experience: Union[int, str]
     birthplace: dict
     is_active: bool
 
-    def __init__(self, player_id, first_name, last_name, full_name, sport, height, weight, age, dob, position, debut_year, birthplace, is_active):
+    def __init__(
+            self, 
+            player_id, 
+            first_name, 
+            last_name, 
+            full_name, 
+            sport, 
+            height, 
+            weight, 
+            age, 
+            dob, 
+            position_id, 
+            team_id,
+            debut_year,
+            experience,
+            birthplace, 
+            is_active
+    ):
         self.player_id = player_id
         self.first_name = first_name
         self.last_name = last_name
@@ -26,26 +45,30 @@ class Athlete:
         self.weight = weight
         self.age = age
         self.dob = dob
-        self.position = position
+        self.position_id = position_id
+        self.team_id = team_id
         self.debut_year = debut_year
+        self.experience = experience
         self.birthplace = birthplace
         self.is_active = is_active
 
     @classmethod
-    def from_json(cls, d):
+    def from_espn_resp(cls, d):
         return cls(
-            d.get('id'),
-            d.get('firstName'),
-            d.get('lastName'),
-            d.get('fullName'),
-            d.get('type'),
-            d.get('height'),
-            d.get('weight'),
-            d.get('age'),
-            d.get('dateOfBirth'),
-            Position.from_json(d.get('position')),
-            d.get('debutYear'),
-            d.get('birthPlace'),
-            d.get('active'),
+            d['id'],
+            d['firstName'],
+            d['lastName'],
+            d['fullName'],
+            d['type'],
+            d['height'],
+            d['weight'],
+            d['age'],
+            d['dateOfBirth'],
+            d['position']['id'],
+            split_id(d['team']['$ref']),
+            d['debutYear'],
+            d['experience'].get('years', 0),
+            d['birthPlace'],
+            d['active'],
         )
 

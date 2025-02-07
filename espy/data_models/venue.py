@@ -4,23 +4,30 @@ class Venue:
 
     venue_id: Union[int, str]
     full_name: str
-    address: dict
+    city: Union[str, None]
+    state: Union[str, None]
+    zip_code: Union[int, str, None]
     grass: bool
     indoor: bool
 
-    def __init__(self, venue_id, full_name, address, grass, indoor):
+    def __init__(self, venue_id, full_name, city, state, zip_code, grass, indoor):
         self.venue_id = venue_id
         self.full_name = full_name
-        self.address = address
+        self.city = city
+        self.state = state
+        self.zip_code = zip_code
         self.grass = grass
         self.indoor = indoor
 
     @classmethod
-    def from_json(cls, d):
+    def from_espn_resp(cls, d):
+        print(d)
         return cls(
-            d.get('id'),
-            d.get('fullName'),
-            d.get('address'),
-            d.get('grass'),
-            d.get('indoor')
+            d['id'],
+            d['fullName'],
+            d['address'].get('city'),
+            d['address'].get('state'),
+            d['address'].get('zipCode'),
+            d['grass'],
+            d['indoor']
         )

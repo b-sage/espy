@@ -1,12 +1,10 @@
 from espy.endpoints.base import BaseEndpoints
+from espy.utils import split_id
 from espy.data_models.athlete import Athlete
 from espy.data_models.team import Team
 from espy.data_models.venue import Venue
 from espy.data_models.position import Position
 from typing import Union
-
-def split_id(url):
-    return url.split('/')[-1].split('?')[0]
 
 #TODO: should probably use a seperate object for the response parsing eg get_athlete_ids
 #TODO: need to think through cases of whether its better to require multiple calls to get the data we need or if just splicing out
@@ -41,7 +39,7 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         return self._extract_ids(self._get_athletes)
 
     def get_athlete(self, id_: Union[int, str]):
-        return Athlete.from_json(self._execute_request(f"athletes/{id_}"))
+        return Athlete.from_espn_resp(self._execute_request(f"athletes/{id_}"))
 
 
 
@@ -54,9 +52,7 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         return self._extract_ids(self._get_teams)
 
     def get_team(self, id_: Union[int, str]):
-        result = self._execute_request(f"teams/{id_}")
-        venue_id = result['venue']['id']
-        return Team.from_json(self._execute_request(f"teams/{id_}"))
+        return Team.from_espn_resp(self._execute_request(f"teams/{id_}"))
 
 
 
@@ -69,7 +65,7 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         return self._extract_ids(self._get_positions)
 
     def get_position(self, id_: Union[int, str]):
-        return Position.from_json(self._execute_request(f"positions/{id_}"))
+        return Position.from_espn_resp(self._execute_request(f"positions/{id_}"))
 
 
 
@@ -82,7 +78,7 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         return self._extract_ids(self._get_venues)
 
     def get_venue(self, id_: Union[int, str]):
-        return Venue.from_json(self._execute_request(f"venues/{id_}"))
+        return Venue.from_espn_resp(self._execute_request(f"venues/{id_}"))
 
 
 
