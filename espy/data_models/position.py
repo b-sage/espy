@@ -3,14 +3,14 @@ from espy.utils import split_id
 
 class Position:
 
-    position_id: Union[int, str]
+    id: Union[int, str]
     name: str
     display_name: str
     abbreviation: str
     parent_id: Union[int, str, None]
 
-    def __init__(self, position_id, name, display_name, abbreviation, parent_id):
-        self.position_id = position_id
+    def __init__(self, id, name, display_name, abbreviation, parent_id):
+        self.id = id
         self.name = name
         self.display_name = display_name
         self.abbreviation = abbreviation

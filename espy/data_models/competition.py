@@ -4,7 +4,7 @@ from espy.data_models.weather import Weather
 
 class Competition:
 
-    competition_id: Union[int, str]
+    id: Union[int, str]
     date: str
     attendance: Union[int, str]
     time_valid: bool

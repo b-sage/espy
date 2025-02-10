@@ -2,7 +2,7 @@ from typing import Union
 
 class Weather:
 
-    weather_type: str
+    type: str
     display_value: str
     zip_code: Union[int, str]
     last_updated: str

@@ -2,7 +2,7 @@ from typing import Union
 
 class Venue:
 
-    venue_id: Union[int, str]
+    id: Union[int, str]
     full_name: str
     city: Union[str, None]
     state: Union[str, None]
@@ -10,8 +10,8 @@ class Venue:
     grass: bool
     indoor: bool
 
-    def __init__(self, venue_id, full_name, city, state, zip_code, grass, indoor):
-        self.venue_id = venue_id
+    def __init__(self, id, full_name, city, state, zip_code, grass, indoor):
+        self.id = id
         self.full_name = full_name
         self.city = city
         self.state = state
@@ -21,7 +21,6 @@ class Venue:
 
     @classmethod
     def from_espn_resp(cls, d):
-        print(d)
         return cls(
             d['id'],
             d['fullName'],

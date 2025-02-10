@@ -3,7 +3,7 @@ from espy.utils import split_id
 
 class Team:
 
-    team_id: Union[int, str]
+    id: Union[int, str]
     location: str
     name: str
     nickname: str
@@ -13,8 +13,8 @@ class Team:
     is_active: bool
     venue_id: Union[int, str]
     
-    def __init__(self, team_id, location, name, nickname, abbreviation, display_name, color, is_active, venue_id):
-        self.team_id = team_id
+    def __init__(self, id, location, name, nickname, abbreviation, display_name, color, is_active, venue_id):
+        self.id = id
         self.location = location
         self.name = name
         self.nickname = nickname

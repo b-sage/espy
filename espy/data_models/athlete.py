@@ -1,26 +1,29 @@
 from typing import Union
+from datetime import datetime
 from espy.utils import split_id
 
 class Athlete:
 
-    player_id: Union[int, str]
+    id: Union[int, str]
     first_name: str
     last_name: str
     sport: str
     height: Union[int, str, float]
     weight: Union[int, str, float]
     age: Union[int, str]
-    dob: str
+    dob: datetime
     position_id: Union[int, str]
     team_id: Union[int, str]
     debut_year: Union[int, str]
-    experience: Union[int, str]
-    birthplace: dict
+    experience: Union[int, str] 
+    birth_city: str
+    birth_state: str
+    birth_country: str
     is_active: bool
 
     def __init__(
             self, 
-            player_id, 
+            id, 
             first_name, 
             last_name, 
             full_name, 
@@ -33,10 +36,12 @@ class Athlete:
             team_id,
             debut_year,
             experience,
-            birthplace, 
+            birth_city,
+            birth_state,
+            birth_country,
             is_active
     ):
-        self.player_id = player_id
+        self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.full_name = full_name
@@ -63,7 +68,7 @@ class Athlete:
             d['height'],
             d['weight'],
             d['age'],
-            d['dateOfBirth'],
+            datetime.strptime(d['dateOfBirth'], "%Y-%m-%dT%H:%MZ"),
             d['position']['id'],
             split_id(d['team']['$ref']),
             d['debutYear'],
