@@ -16,9 +16,9 @@ class Athlete:
     team_id: Union[int, str]
     debut_year: Union[int, str]
     experience: Union[int, str] 
-    birth_city: str
-    birth_state: str
-    birth_country: str
+    birth_city: Union[str, None]
+    birth_state: Union[str, None]
+    birth_country: Union[str, None]
     is_active: bool
 
     def __init__(
@@ -73,7 +73,9 @@ class Athlete:
             split_id(d['team']['$ref']),
             d['debutYear'],
             d['experience'].get('years', 0),
-            d['birthPlace'],
+            d['birthPlace'].get('city'),
+            d['birthPlace'].get('state'),
+            d['birthPlace'].get('country'),
             d['active'],
         )
 

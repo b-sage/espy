@@ -1,9 +1,12 @@
 from espy.endpoints.base import BaseEndpoints
 from espy.utils import split_id
+from espy.parameters import SeasonType
 from espy.data_models.athlete import Athlete
 from espy.data_models.team import Team
 from espy.data_models.venue import Venue
 from espy.data_models.position import Position
+from espy.data_models.event import Event
+from espy.data_models.season import SeasonPart, Season
 from typing import Union
 
 #TODO: should probably use a seperate object for the response parsing eg get_athlete_ids
@@ -19,11 +22,11 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         super().__init__(sport, league)
         self.base_url = self.base_url.format(sport, league)
     
-    def _extract_ids(self, func):
+    def _extract_ids(self, func, **kwargs):
         ids = []
         pg = 1
         while True:
-            result = func(page=pg)
+            result = func(page=pg, **kwargs)
             ids += [split_id(item['$ref']) for item in result['items']]
             if result['pageIndex'] == result['pageCount']:
                 return ids
@@ -93,17 +96,27 @@ class ReferenceSportsEndpoints(BaseEndpoints):
         query = self._build_query(False, limit=limit, page=page)
         return self._execute_request("seasons" + query)
 
-    def get_seasons(self):
+    def get_season_ids(self):
         return self._extract_ids(self._get_seasons)
 
     def get_season(self, year: Union[int, str]):
-        return self._execute_request(f"seasons/{year}")
+        return Season.from_espn_resp(self._execute_request(f"seasons/{year}"))
 
-    
+    def get_season_part(self, year: Union[int, str], type_: SeasonType):
+        return SeasonPart.from_espn_resp(self._execute_request(f"seasons/{year}/types/{type_.value}"))
 
+
+
+
+    def _get_events_by_season_and_week(self, year: Union[int, str], week: Union[int, str], season_type: Union[int, str], limit: int=100, page: int=1):
+        query = self._build_query(False, limit=limit, page=page)
+        return self._execute_request(f"seasons/{year}/types/{season_type}/weeks/{week}/events" + query)
+
+    def get_event_ids_by_season_and_week(self, year: Union[int, str], week: Union[int, str], season_type: Union[int, str]=2):
+        return self._extract_ids(self._get_events_by_season_and_week, year=year, week=week, season_type=season_type)
 
     def get_event(self, id_: Union[int, str]):
-        return self._execute_request(f"events/{id_}")
+        return Event.from_espn_resp(self._execute_request(f"events/{id_}"))
 
 
 class ReferenceSiteEndpoints(BaseEndpoints):

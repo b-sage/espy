@@ -6,7 +6,7 @@ class Team:
     id: Union[int, str]
     location: str
     name: str
-    nickname: str
+    nickname: Union[str, None]
     abbreviation: str
     display_name: str
     color: str
@@ -30,7 +30,7 @@ class Team:
             d['id'],
             d['location'],
             d['name'],
-            d['nickname'],
+            d.get('nickname'),
             d['abbreviation'],
             d['displayName'],
             d['color'],
